@@ -6,9 +6,12 @@ use App\Repository\AvisRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
+#[ApiResource(attributes:["datetime_format" => "d-m-Y"])]
 class Avis
 {
     #[ORM\Id]
@@ -17,11 +20,12 @@ class Avis
     #[Groups("avis")]
     private $id;
 
-    #[ORM\Column(type: 'date')]
+    /*
+    #[ORM\Column(type: 'datetime')]
     #[Assert\Date()]
-    #[Groups("avis")]
-    private $dateAvis;
-
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'd-m-Y'])]
+    private ?\DateTimeInterface $dateAvis;
+*/
     #[ORM\Column(type: 'integer')]
     #[Groups("avis")]
     private $note;
@@ -37,7 +41,7 @@ class Avis
     {
         return $this->id;
     }
-
+/*
     public function getDateAvis(): ?\DateTimeInterface
     {
         return $this->dateAvis;
@@ -49,7 +53,7 @@ class Avis
 
         return $this;
     }
-
+*/
     public function getNote(): ?float
     {
         return $this->note;

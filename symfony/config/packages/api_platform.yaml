@@ -1,4 +1,7 @@
 api_platform:
+    title: 'TechStoreApi'
+    description: 'Api pour le techstore'
+    version: '1.0.0'
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     patch_formats:

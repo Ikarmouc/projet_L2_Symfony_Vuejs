@@ -2,16 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AvisRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
-#[ApiResource(attributes:["datetime_format" => "d-m-Y"])]
+#[ApiResource(denormalizationContext: ['groups' => ['avis']],
+)]
 class Avis
 {
     #[ORM\Id]
@@ -20,62 +18,27 @@ class Avis
     #[Groups("avis")]
     private $id;
 
-    /*
-    #[ORM\Column(type: 'datetime')]
-    #[Assert\Date()]
-    #[Context([DateTimeNormalizer::FORMAT_KEY => 'd-m-Y'])]
-    private ?\DateTimeInterface $dateAvis;
-*/
+    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'avis')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["avis","product"])]
+    private $produit;
+
     #[ORM\Column(type: 'integer')]
     #[Groups("avis")]
     private $note;
 
-    #[ORM\Column(type: 'text')]
-    #[Groups("avis")]
-    private $detailsAvis;
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(["avis","product"])]
+    private $comments;
 
-    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'Avis')]
-    private $produit;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["avis","product"])]
+    private $username;
+
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-/*
-    public function getDateAvis(): ?\DateTimeInterface
-    {
-        return $this->dateAvis;
-    }
-
-    public function setDateAvis(\DateTimeInterface $dateAvis): self
-    {
-        $this->dateAvis = $dateAvis;
-
-        return $this;
-    }
-*/
-    public function getNote(): ?float
-    {
-        return $this->note;
-    }
-
-    public function setNote(float $note): self
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
-    public function getDetailsAvis(): ?string
-    {
-        return $this->detailsAvis;
-    }
-
-    public function setDetailsAvis(string $detailsAvis): self
-    {
-        $this->detailsAvis = $detailsAvis;
-
-        return $this;
     }
 
     public function getProduit(): ?Produit
@@ -86,6 +49,42 @@ class Avis
     public function setProduit(?Produit $produit): self
     {
         $this->produit = $produit;
+
+        return $this;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(int $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getComments(): ?string
+    {
+        return $this->comments;
+    }
+
+    public function setComments(?string $comments): self
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }

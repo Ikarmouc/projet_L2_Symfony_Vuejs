@@ -13,25 +13,25 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[Vich\Uploadable]
-#[ApiResource]
+#[ApiResource(normalizationContext: ['groups' => ['product']])]
 class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups("product")]
+    #[Groups(["product","cat","avis"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups("product")]
+    #[Groups(["product","cat",'avis'])]
     private $nom;
 
     #[ORM\Column(type: 'float')]
-    #[Groups("product")]
+    #[Groups(["product"])]
     private $prix;
 
     #[ORM\Column(type: 'text')]
-    #[Groups("product")]
+    #[Groups(["product"])]
     private $description;
 
 
@@ -107,11 +107,9 @@ class Produit
     private ?int $imageSize = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups("product:read")]
     private ?\DateTimeInterface $updatedAt = null;
 
-
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Avis::class)]
-    private $avis;
 
     #[Groups("product")]
     private float $moyAvis;
@@ -125,10 +123,15 @@ class Produit
     #[Groups('product')]
     private Categorie $categorie;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Avis::class, orphanRemoval: true)]
+    #[Groups("product")]
+    private $avis;
+
     public function __construct()
     {
         $this->avis = new ArrayCollection();
     }
+
 
     /**
      * @return float
@@ -205,6 +208,18 @@ class Produit
         return $this->imageSize;
     }
 
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Avis>
      */
@@ -213,7 +228,7 @@ class Produit
         return $this->avis;
     }
 
-    public function addAvis(Avis $avi): self
+    public function addAvi(Avis $avi): self
     {
         if (!$this->avis->contains($avi)) {
             $this->avis[] = $avi;
@@ -223,25 +238,14 @@ class Produit
         return $this;
     }
 
-    public function removeAvi(Avis $avis): self
+    public function removeAvi(Avis $avi): self
     {
-        if ($this->avis->removeElement($avis)) {
+        if ($this->avis->removeElement($avi)) {
             // set the owning side to null (unless already changed)
-            if ($avis->getProduit() === $this) {
-                $avis->setProduit(null);
+            if ($avi->getProduit() === $this) {
+                $avi->setProduit(null);
             }
         }
-        return $this;
-    }
-
-    public function getCategorie(): ?Categorie
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?Categorie $categorie): self
-    {
-        $this->categorie = $categorie;
 
         return $this;
     }

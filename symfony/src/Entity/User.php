@@ -6,33 +6,15 @@ use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\meController;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource(
-    collectionOperations: [
-        'me' => [
-            'pagination_enabled' => false,
-            'path' => '/me',
-            'method' => 'get',
-            'controller' => meController::class,
-            'read' => false
-        ]
-    ],
-    itemOperations: [
-        'get' => [
-            'controller' => NotFoundAction::class,
-            'openapi_context' => ["summary" => 'hidden'],
-            'read' => false,
-            'output' => false
-        ]
-    ],normalizationContext: ['groups' => 'read:User']
-)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -69,6 +51,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      */
     private $confirmPassword;
+
+    public function __construct()
+    {
+        $this->avis = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -213,4 +200,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
 }

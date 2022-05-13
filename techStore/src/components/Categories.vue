@@ -1,19 +1,15 @@
 <template>
-    
-                <div v-for="categorie in store.category" :key="categorie.id">
-                  <router-link @click="store.setSelectedCategory(categorie.id)" class="btn btn-primary" :to="{ name: 'ProductByCat',params:{ slug: categorie.slug }}">{{categorie.nomCategorie}}</router-link>
-                </div>
+    <div v-for="categorie in store.categories" :key="categorie.id">
+        <Categorie :nom=categorie.nomCategorie :id=categorie.id></Categorie>
+</div>
 </template>
 
 <script setup>
 
 import { ref ,computed } from 'vue'
-import { CategoryStore } from '@/stores/counter'
-const props = defineProps({
-  category: Array,
-})
-
-const store = CategoryStore()
+import { useDefaultStore } from '@/stores';
+import Categorie from './Categorie.vue';
+const store = useDefaultStore()
 
 
 </script>

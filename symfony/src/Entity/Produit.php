@@ -27,10 +27,10 @@ class Produit
     private $nom;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["read:product",'post:Avis'])]
+    #[Groups(["read:product",'read:category','post:Avis'])]
     private $prix;
 
-    #[Groups(["read:product",'post:Avis'])]
+    #[Groups(["read:product",'read:category','post:Avis'])]
     #[ORM\Column(type: 'text')]
     private $description;
 
@@ -55,7 +55,7 @@ class Produit
     private float $moyAvis;
 
     #[ORM\Column(type: 'string', length: 255 ,nullable: true)]
-    #[Groups(["read:product",'post:Avis'])]
+    #[Groups(["read:product",'read:category','post:Avis'])]
     private $img;
 
 
@@ -65,7 +65,7 @@ class Produit
     private Categorie $categorie;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Avis::class, orphanRemoval: true)]
-    #[Groups(["read:product"])]
+    #[Groups(["read:product",'read:category'])]
     private $avis;
 
 

@@ -28,15 +28,15 @@ class Avis
 
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["read:product",'read:avis','post:Avis'])]
+    #[Groups(["read:product",'read:avis','post:Avis','read:category'])]
     private $note;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(["read:product",'read:avis','post:Avis'])]
+    #[Groups(["read:product",'read:avis','post:Avis','read:category'])]
     private $comments;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:product",'read:avis','post:Avis'])]
+    #[Groups(["read:product",'read:avis','post:Avis','read:category'])]
     private $username;
 
 

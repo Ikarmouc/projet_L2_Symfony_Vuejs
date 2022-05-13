@@ -4,32 +4,39 @@
   <!-- Navbar content -->
   
   <div>
-  <router-link :to="{ name: 'homepage'}" class="btn btn-danger">Accueil</router-link>
+  <router-link :to="{ name: 'homepage'}" class="btn btn-danger" @click.prevent="resetCat()">Accueil</router-link>
   </div>
-        <div class="btn btn-info">Parcourir</div>
-        <router-link v-if="isLogged" class="btn btn-primary" :to="{ name: 'homepage'}" >
+    <div v-if="store.user== []" >
       Se déconnecter
-    </router-link>
-    <router-link v-else class="btn btn-primary" :to="{ name: 'homepage'}" >
-      Se Connecter
-    </router-link>
-        <RouterLink to="/panier" class="btn btn-info">Panier {{panier.panier.length}}</RouterLink>
+    </div>
+    <div v-else class="btn btn-primary">
+       <button @click="changeVisible()"> Se Connecter </button>
+    <div v-if="visible">
+          <Login/>
+    </div>
+    </div>
 </nav>
 <nav class="navbar navbar-dark bg-primary" style="display:flex; justify-content:center">
         <Categories/>
-
 </nav>
   </header>
 </template>
 <script setup>
-import Products from '@/components/ProductList.vue'
-import { CategoryStore,Panier } from '@/stores/counter'
 import Categories from '@/components/Categories.vue'
 import { RouterLink, RouterView} from 'vue-router'
-
 import { useRoute, useRouter } from 'vue-router'
-import '@/assets/bootstrap.min.css'
-import '@/assets/base.css'
+import { useDefaultStore } from '../stores';
+import Login from './Login.vue';
+import { ref } from 'vue';
+const store = useDefaultStore()
 
-const panier = Panier()
+  const visible = ref(false);
+
+  function changeVisible() {
+    visible.value = !visible.value;
+  }
+
+function resetCat(){
+  store.setTous()
+}
 </script>

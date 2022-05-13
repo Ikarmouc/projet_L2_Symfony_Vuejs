@@ -26,9 +26,9 @@
 import { ref ,computed } from 'vue'
 import { productStore } from '@/stores/counter'
 
-const props = defineProps({
-  products: Array,
-})
+
+
+
 
 const store = productStore()
 

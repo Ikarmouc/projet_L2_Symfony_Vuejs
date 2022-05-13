@@ -13,26 +13,60 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[Vich\Uploadable]
-#[ApiResource(normalizationContext: ['groups' => ['product']])]
+#[ApiResource(normalizationContext: ['groups' => ['read:product']])]
 class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["product","cat","avis"])]
+    #[Groups(["read:product",'read:avis','read:category','write:avis','post:Avis','post:Avis'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["product","cat",'avis'])]
+    #[Groups(["read:product",'read:avis','read:category','post:Avis'])]
     private $nom;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["product"])]
+    #[Groups(["read:product",'post:Avis'])]
     private $prix;
 
+    #[Groups(["read:product",'post:Avis'])]
     #[ORM\Column(type: 'text')]
-    #[Groups(["product"])]
     private $description;
+
+    /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     */
+    #[Vich\UploadableField(mapping: 'image', fileNameProperty: 'img', size: 'imageSize')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Groups("product",'post:Avis')]
+    private ?string $imageName = null;
+
+    #[ORM\Column(type: 'integer')]
+    private ?int $imageSize = null;
+
+    #[ORM\Column(type: 'datetime')]
+
+    private ?\DateTimeInterface $updatedAt = null;
+
+    #[Groups("product")]
+    private float $moyAvis;
+
+    #[ORM\Column(type: 'string', length: 255 ,nullable: true)]
+    #[Groups(["read:product",'post:Avis'])]
+    private $img;
+
+
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits',cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read:product",'post:Avis'])]
+    private Categorie $categorie;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Avis::class, orphanRemoval: true)]
+    #[Groups(["read:product"])]
+    private $avis;
 
 
     public function getId(): ?int
@@ -93,39 +127,7 @@ class Produit
     }
 
 
-    /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     */
-    #[Vich\UploadableField(mapping: 'image', fileNameProperty: 'img', size: 'imageSize')]
-    private ?File $imageFile = null;
 
-    #[ORM\Column(type: 'string')]
-    #[Groups("product")]
-    private ?string $imageName = null;
-
-    #[ORM\Column(type: 'integer')]
-    private ?int $imageSize = null;
-
-    #[ORM\Column(type: 'datetime')]
-    #[Groups("product:read")]
-    private ?\DateTimeInterface $updatedAt = null;
-
-
-    #[Groups("product")]
-    private float $moyAvis;
-
-    #[ORM\Column(type: 'string', length: 255 ,nullable: true)]
-    #[Groups("product")]
-    private $img;
-
-    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups('product')]
-    private Categorie $categorie;
-
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Avis::class, orphanRemoval: true)]
-    #[Groups("product")]
-    private $avis;
 
     public function __construct()
     {

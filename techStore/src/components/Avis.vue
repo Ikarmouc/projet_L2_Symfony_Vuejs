@@ -35,36 +35,6 @@ const product = productStore()
 const avis = AvisStore()
 const route = useRoute()
 
-/*
-
-const props = defineProps(
-    {
-        product : Object
-    }
-)
-let listAvisProduct = getAvisProduct()
-function getAvisProduct(){
-    let listAvis = []
-    for (let i = 0; i < avis.Avis.length; i++) {
-        if (avis.Avis[i].productId === props.product.id) {
-            listAvis.push(avis.Avis[i])
-        }
-        console.log(listAvis)
-    }
-    return listAvis;
-    console.log("C'est le bon : ")
-    console.log(props.product)
-
-    let listAvis = avis.avis[1]
-    
-    console.log(listAvis)
-    for (let i = 0; i < avis.Avis.length; i++) {
-        console.log()
-        
-    }
-}
-*/
-
 
 
 </script>

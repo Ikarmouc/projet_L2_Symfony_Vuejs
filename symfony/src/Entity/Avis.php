@@ -8,31 +8,35 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
-#[ApiResource(denormalizationContext: ['groups' => ['avis']],
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:avis']],
+    denormalizationContext: ['groups' => 'post:Avis']
+
 )]
 class Avis
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups("avis")]
+    #[Groups(["read:product",'read:avis'])]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'avis')]
+    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'avis',cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["avis","product"])]
+    #[Groups(['read:avis','post:Avis'])]
     private $produit;
 
+
     #[ORM\Column(type: 'integer')]
-    #[Groups("avis")]
+    #[Groups(["read:product",'read:avis','post:Avis'])]
     private $note;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(["avis","product"])]
+    #[Groups(["read:product",'read:avis','post:Avis'])]
     private $comments;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["avis","product"])]
+    #[Groups(["read:product",'read:avis','post:Avis'])]
     private $username;
 
 

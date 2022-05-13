@@ -2,10 +2,7 @@
 
     <div class="card text-center">
       <h1 class="card-title">{{ produit.nom }}</h1>
-      <img
-        class="card-img-top img"
-        src="https://via.placeholder.com/150"
-      />
+      <img class="card-img-top img" :src="'..\symfony\public\img\404.jpg' " />
       <p class="card-text">{{ produit.description }}</p>
       <p>{{ produit.prix }}</p>
       <p>{{ produit.categorie }}</p>

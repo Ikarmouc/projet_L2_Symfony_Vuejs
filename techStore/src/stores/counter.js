@@ -11,7 +11,7 @@ export const productStore = defineStore({
         prix: 199999,
         description: "Exemple de pc fixe gamer",
         imageName: "pc-gamer-fixe",
-        img: "../../symfony/public/img/  pc01-6266b9cc92f79133553340.jfif",
+        img: "../../symfony/public/img/404.jpg",
         categorie: "pc-fixe",
         qtePanier : 0
       },

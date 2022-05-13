@@ -11,21 +11,22 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
-#[ApiResource(normalizationContext: ['groups' => ['cat']])]
+#[ApiResource(normalizationContext: ['groups' => ['read:category']],    denormalizationContext: ['groups' => 'post:category']
+)]
 class Categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups("cat")]
+    #[Groups(["read:product",'read:category','post:category'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups("cat")]
+    #[Groups(["read:product",'read:category','post:category'])]
     private $nomCategorie;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Produit::class)]
-    #[Groups("cat")]
+    #[Groups(['read:category'])]
     private $produits;
 
     public function __construct()

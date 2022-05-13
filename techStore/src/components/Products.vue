@@ -1,15 +1,22 @@
 <template>
-  <ProductList :products="store.products"></ProductList>
-
-  <p></p>
+ <ul class="products">
+        <li class="card text-center"  v-for="product in store.products" :key="product">
+          <Product class="card-body products" :product=product></Product>
+        </li>
+    </ul>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import ProductList from "./ProductList.vue";
-import { productStore } from '@/stores/counter'
+import {useDefaultStore} from '@/stores/index.js'
+import Product from './Product.vue';
 
-const store = productStore();
+const store = useDefaultStore()
 
 
 </script>
+
+<style>
+
+
+
+</style>

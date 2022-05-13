@@ -1,16 +1,20 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../components/Home.vue'
-import ProductListVue from '../components/ProductList.vue'
-import ProductInformation from '@/components/ProductInformation.vue'
-import ProductCat from '@/components/ProductListByCat.vue'
-import Panier from '@/components/Panier.vue'
+import ProductsVue from '../components/Products.vue'
+import ProduitDetailsVue from '../components/ProduitDetails.vue'
 
 const routes = [
     {
       path: '/',
       name : 'homepage',
-      component : ProductListVue
+      component : ProductsVue
     },
+    {
+      path:'/product/:id',
+      name: 'ProduitDetailsVue',
+      component: ProduitDetailsVue,
+    }
+    /*
     {
       path:"/produit/:id",
       name:'ProductInformations',
@@ -20,12 +24,7 @@ const routes = [
       path:"/categorie/:slug",
       name:'ProductByCat',
       component:ProductCat,
-    },
-    {
-      path:"/panier",
-      name:'Panier',
-      component:Panier,
-    },
+    },*/
 ]
 
 const router = createRouter({

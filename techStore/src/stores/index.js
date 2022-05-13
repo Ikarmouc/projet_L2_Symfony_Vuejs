@@ -3,7 +3,7 @@
   import Axios from 'axios'
 import axios from "axios";
   // Cors a fixer avant de pouvoir changer de urlApi
-  var urlApi = "poyo.axxonte.xyz"
+  var urlApi = "localhost"
   axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*"
   export const useDefaultStore = defineStore({
     id: "default",
@@ -21,6 +21,7 @@ import axios from "axios";
       categoriesDepart:[],
       user:[],
       panier:[],
+      panierTotalPrice:0,
       headers:('Access-Control-Allow-Origin')
       }),
     getters: {
@@ -29,7 +30,9 @@ import axios from "axios";
       login(username,password){
         Axios.post(this.urlLogin, {username: username,password: password})
           .then((response) => {
-            console.log(response);
+            console.log(response.data);
+            this.user = response.data.username
+
           }, (error) => {
             console.log(error);
           });
@@ -50,7 +53,6 @@ import axios from "axios";
           // gestes est une copie de gestesDepart
           this.categories = [...this.categoriesDepart]
         }),
-        
         Axios.get(this.urlApiAvis)
         .then(response => response.data)
         .then((donneesAvis) => {
@@ -62,6 +64,26 @@ import axios from "axios";
       setTous()
       {
         this.products = this.productDepart
+      },
+
+      
+      checkAvisExistant(product)
+      {
+        // let result;
+
+        // result = this.avis.find(element => this.avis.username = this.user)
+        // console.log(result)          
+        
+      },
+      addAvis(data){
+        Axios.post(this.urlApiAvis, data)
+          .then((response) => {
+            console.log(response.data);
+            this.avis.push(response.data)
+
+          }, (error) => {
+            console.log(error);
+          });
       },
       getProductById(id){
         for (let i = 0; i < this.products.length; i++) {
@@ -80,6 +102,18 @@ import axios from "axios";
           
         }
         
-      }
+      },
+
+    addProductToShoppingCard(product){
+        this.panier.push(product)
+        this.panierTotalPrice+=product.prix
+    },
+    deleteProductToShoppingCard(index){
+      this.panierTotalPrice-= this.panier[index].prix
+      this.panier.splice(index,1)
+    },
+    sub(i){
+      this.total-=i
     }
+    },
   })

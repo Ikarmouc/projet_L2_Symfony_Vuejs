@@ -1,6 +1,7 @@
 <template>
  <ul class="products">
-        <li class="card text-center"  v-for="product in store.products" :key="product">
+        <li v-if="store.products.lenght == 0" ></li>
+        <li class="card text-center" v-else  v-for="product in store.products" :key="product">
           <Product class="card-body products" :product=product></Product>
         </li>
     </ul>

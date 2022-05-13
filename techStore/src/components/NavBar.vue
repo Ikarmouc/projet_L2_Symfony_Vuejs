@@ -6,14 +6,17 @@
   <div>
   <router-link :to="{ name: 'homepage'}" class="btn btn-danger" @click.prevent="resetCat()">Accueil</router-link>
   </div>
+    
+  <router-link :to="{ name: 'panier'}" class="btn btn-info">Panier : ({{store.panier.length}}) elements</router-link>
+
     <div v-if="store.user== []" >
       Se déconnecter
     </div>
     <div v-else class="btn btn-primary">
        <button @click="changeVisible()"> Se Connecter </button>
+       </div>
     <div v-if="visible">
           <Login/>
-    </div>
     </div>
 </nav>
 <nav class="navbar navbar-dark bg-primary" style="display:flex; justify-content:center">

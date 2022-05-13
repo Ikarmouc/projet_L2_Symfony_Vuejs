@@ -1,5 +1,5 @@
 <template>
-<form action="action_page.php" method="post">
+<form method="post">
 
   <div class="container">
     <label for="uname"><b>Username</b></label>
@@ -8,7 +8,7 @@
     <label for="psw"><b>Password</b></label>
     <input type="password" v-model="password" placeholder="Enter Password" name="psw" required>
 
-    <button type="submit" @click.prevent="login(username,password)" name="send">Login</button>
+    <button type="reset" @click.prevent="login(username,password)" name="send">Login</button>
   </div>
 </form>
 </template>
